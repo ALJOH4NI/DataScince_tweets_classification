@@ -15,56 +15,82 @@ Lemmatize: Reduce each word to its lemma.
 
 '''
 
-class NLP_text:
+class NLP:
 
-    def lower_case(data):
-        dict = {}
-        for key, value in data.items():
+    def tokenize(all_tweets):
+        new_list = []
+        for tweet in all_tweets:
+            new_list.append(word_tokenize(tweet[0]))
+        return new_list
+
+    def lower_case(tweet_as_token):
+        new_list = []
+        for tweet in tweet_as_token:
             lst = []
-            [lst.append(i.lower()) for i in value]
-            dict.update({key: lst})
-        return dict
+            for token in tweet:
+                lst.append(token.lower())
+            new_list.append(lst)
+        return new_list
 
+
+    def parts_of_speech(tweet_as_token):
+        new_list = []
+        part_of_speech = ['RB','JJ','NN','VBP']
+        for tweet in tweet_as_token:
+            lst = []
+            for token in nltk.pos_tag(tweet):
+                if token in part_of_speech:
+                    print(tweet)
+                    lst.append(token)
+            new_list.append(lst)
+        return new_list
 
     def parts_of_speech(data):
         newDict = {}
         part_of_speech = ['RB','JJ','NN','VBP']
-        for key,k in data.items():
-            lst = []
-            for word in nltk.pos_tag(k):
-                if word[1] in part_of_speech:
-                    lst.append(word[0])
-            newDict.update({key: lst})
+        for tweet in data:
+            for t in tweet:
+                print(t)
+                lst = []
+                for word in nltk.pos_tag(t):
+                    if word[1] in part_of_speech:
+                        print(word[0])
+                        lst.append(word[0])
+                newDict.update({tweet: lst})
         return newDict
 
+    def parts(all):
+        ret_lst = []
+        part_of_speech = ['RB', 'JJ', 'NN', 'VBP']
+        for i in all:
+            temp_lst = []
+            for t in nltk.pos_tag(i):
+                if t[1] in part_of_speech:
+                    temp_lst.append(t[0])
+            ret_lst.append(temp_lst)
+        return ret_lst
 
-    def stop_word_removal(dict):
-        newDict = {}
-        custom_list = ['.','(',')','/','will','i',',','the', 'he','she']
+    def stop_word_removal(tweet_as_token):
+        new_list = []
+        custom_list = ['.','(',')','/','will','i',',','the', 'he','she',]
         list_of_list = custom_list + stopwords.words("english")
-        for key, value in dict.items():
+        for tweet in tweet_as_token:
             lst = []
-            for word in value:
-                if word not in list_of_list:
-                    lst.append(word)
-            newDict.update({key: lst})
-        return newDict
+            for token in tweet:
+                if token not in list_of_list:
+                    lst.append(token)
+            new_list.append(lst)
+        return new_list
 
 
-    def tokenize(dict):
-        new_dict = {}
-        for key, value in dict.items():
-            new_dict.update({key: word_tokenize(value)})
-        return new_dict
-
-
-    def lemmatize(data):
-        dict = {}
+    def lemmatize(tweet_as_token):
+        new_list = []
         lst = []
         lemmatizer = WordNetLemmatizer()
-        for key, value in data.items():
-            for word in value:
-                lst.append(lemmatizer.lemmatize(word))
-            dict.update({key: lst})
+        for tweet in tweet_as_token:
+            for token in tweet:
+                lst.append(lemmatizer.lemmatize(token))
+            new_list.append(lst)
             lst = []
-        return dict
+        return new_list
+
