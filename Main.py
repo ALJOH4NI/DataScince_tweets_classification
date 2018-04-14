@@ -1,8 +1,25 @@
+from ReadCSV import CSV
 
 
-def main():
-    pass
+class Main:
+    tweets = []
+    def getDataCSV(self):
+        tweets = CSV.get_cvs(self)
+        return tweets
+
+    def print_tweets(self):
+        temp = []; temp = self.getDataCSV()
+        for tweet in temp:
+            print(tweet)
 
 
 
-main()
+
+
+
+
+'''
+Call methods
+'''
+MainObj = Main()
+MainObj.print_tweets()
